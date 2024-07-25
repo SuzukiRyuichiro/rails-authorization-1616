@@ -8,7 +8,9 @@ class RestaurantPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
-      scope.where.not(user: user)
+      # If I am an admin, I should see all the restaurants
+      # If I am not an admin, I should only see my restaurants
+      user.admin? ? scope.all : scope.where(user: user)
       # Restaurant.all
     end
   end
