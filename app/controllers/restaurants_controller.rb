@@ -8,6 +8,7 @@ class RestaurantsController < ApplicationController
 
   # GET /restaurants/1
   def show
+    authorize(@restaurant)
   end
 
   # GET /restaurants/new
