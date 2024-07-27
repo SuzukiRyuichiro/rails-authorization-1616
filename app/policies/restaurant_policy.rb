@@ -7,9 +7,9 @@ class RestaurantPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.where.not(user: user)
+    end
   end
 
   def show?
@@ -22,5 +22,20 @@ class RestaurantPolicy < ApplicationPolicy
 
   def create?
     true
+  end
+
+  def edit?
+    # Only the owner of the restaurant is allowed to edit
+    # record # referring to the instance that we're authorizing
+    # user # current_user
+    record.user == user
+  end
+
+  def update?
+    edit?
+  end
+
+  def destroy?
+    edit?
   end
 end
